@@ -1,7 +1,10 @@
 import { Router } from "express";
-import { createRequerimiento } from "../controllers/requerimiento.controllers.js";
+import { getRequerimientos, createRequerimiento } from "../controllers/requerimiento.controllers.js";
 
 const router = Router();
+
+//Obtener todos los Requerimientos
+router.get("/requerimientos/:emp_codEmpleado", getRequerimientos);
 
 //Crear registro en la tabla REQUERIMIENTO
 router.post("/requerimiento", createRequerimiento);

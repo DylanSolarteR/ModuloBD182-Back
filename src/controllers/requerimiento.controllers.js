@@ -1,18 +1,96 @@
 import oracleDB from "oracledb";
 
+export const getRequerimientos = async (req, res) => {
+    try {
+        const dbConnection = await oracleDB.getConnection("myPool");
+
+        const { emp_codEmpleado } = req.params;
+
+        const requerimientos = await dbConnection.execute(
+            `
+                SELECT 
+                    *
+                FROM 
+                    REQUERIMIENTO
+                WHERE 
+                    EMP_CODEMPLEADO = '${emp_codEmpleado}'
+            `
+        );
+
+        if(requerimientos.rows.length === 0) {
+            return res.status(200).json({ message: 'El empleado no tiene Requerimientos' })
+        }
+
+        return res.status(200).json(requerimientos.rows);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Error interno del servidor' })
+    }
+}
+
 export const createRequerimiento = async (req, res) => {
     try {
         const dbConnection = await oracleDB.getConnection("myPool");
 
-        const {codEmpleado, fechaReque, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes} = req.body;
+        const {consecReque, codEmpleado, emp_codEmpleado, fechaReque, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes} = req.body;
+
+        //const fechaRequeDate = new Date(fechaReque);
+        //console.log(fechaRequeDate);
+
+        /*const requerimiento = await dbConnection.execute(
+            `
+                INSERT INTO REQUERIMIENTO (
+                    CONSECREQUE, 
+                    CODEMPLEADO, 
+                    EMP_CODEMPLEADO, 
+                    FECHAREQUE, 
+                    SALARIOMAX, 
+                    SALARIOMIN, 
+                    DESFUNCION, 
+                    DESCARRERAS, 
+                    NVVACANTES,
+                ) VALUES (
+                    ${consecReque}, 
+                    ${codEmpleado}, 
+                    ${emp_codEmpleado}, 
+                    SYSDATE, 
+                    ${salarioMax}, 
+                    ${salarioMin}, 
+                    ${desFuncion}, 
+                    ${desCarreras}, 
+                    ${nVacantes},
+                )
+            `
+        )*/
 
         const requerimiento = await dbConnection.execute(
             `
-                INSERT INTO Requerimiento (Emp_codEmpleado, fechaReque, salarioMax, salarioMin, desFuncion, desCarreras, nVvacantes) 
-                VALUES (${codEmpleado}, ${fechaReque}, ${salarioMax}, ${salarioMin}, ${desFuncion}, ${desCarreras}, ${nVacantes})
-                RETURNING *
-            `
+                INSERT INTO REQUERIMIENTO(
+                    CONSECREQUE, 
+                    CODEMPLEADO, 
+                    EMP_CODEMPLEADO, 
+                    FECHAREQUE, 
+                    SALARIOMAX, 
+                    SALARIOMIN, 
+                    DESFUNCION, 
+                    DESCARRERAS, 
+                    NVVACANTES,
+                ) VALUES (
+                    :1,
+                    :2,
+                    :3,
+                    :4,
+                    :5,
+                    :6,
+                    :7,
+                    :8,
+                    :9
+                );
+            `,
+            [consecReque, codEmpleado, emp_codEmpleado, fechaReque, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes]
         )
+
+        //await dbConnection.execute('COMMIT');
 
         return res.status(200).json(requerimiento.rows);
     } catch (error) {
