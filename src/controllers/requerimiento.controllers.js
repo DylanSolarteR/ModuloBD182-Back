@@ -74,7 +74,7 @@ export const createRequerimiento = async (req, res) => {
                     SALARIOMIN, 
                     DESFUNCION, 
                     DESCARRERAS, 
-                    NVVACANTES,
+                    NVVACANTES
                 ) VALUES (
                     :1,
                     :2,
@@ -82,9 +82,7 @@ export const createRequerimiento = async (req, res) => {
                     :4,
                     :5,
                     :6,
-                    :7,
-                    :8,
-                    :9
+                    :7
                 );
             `,
             [consecReque, codEmpleado, emp_codEmpleado, fechaReque, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes]
