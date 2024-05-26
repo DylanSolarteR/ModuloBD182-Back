@@ -32,42 +32,13 @@ export const createRequerimiento = async (req, res) => {
     try {
         const dbConnection = await oracleDB.getConnection("myPool");
 
-        const {consecReque, codEmpleado, emp_codEmpleado, fechaReque, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes} = req.body;
-
-        //const fechaRequeDate = new Date(fechaReque);
-        //console.log(fechaRequeDate);
-
-        /*const requerimiento = await dbConnection.execute(
-            `
-                INSERT INTO REQUERIMIENTO (
-                    CONSECREQUE, 
-                    CODEMPLEADO, 
-                    EMP_CODEMPLEADO, 
-                    FECHAREQUE, 
-                    SALARIOMAX, 
-                    SALARIOMIN, 
-                    DESFUNCION, 
-                    DESCARRERAS, 
-                    NVVACANTES,
-                ) VALUES (
-                    ${consecReque}, 
-                    ${codEmpleado}, 
-                    ${emp_codEmpleado}, 
-                    SYSDATE, 
-                    ${salarioMax}, 
-                    ${salarioMin}, 
-                    ${desFuncion}, 
-                    ${desCarreras}, 
-                    ${nVacantes},
-                )
-            `
-        )*/
+        const {consecReque, codEmpleado, emp_codEmpleado, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes} = req.body;
 
         const requerimiento = await dbConnection.execute(
             `
                 INSERT INTO REQUERIMIENTO(
-                    CONSECREQUE, 
-                    CODEMPLEADO, 
+                    CONSECREQUE,
+                    CODEMPLEADO,
                     EMP_CODEMPLEADO, 
                     FECHAREQUE, 
                     SALARIOMAX, 
@@ -79,16 +50,18 @@ export const createRequerimiento = async (req, res) => {
                     :1,
                     :2,
                     :3,
+                    SYSDATE,
                     :4,
                     :5,
                     :6,
-                    :7
-                );
+                    :7,
+                    :8
+                )
             `,
-            [consecReque, codEmpleado, emp_codEmpleado, fechaReque, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes]
+            [consecReque, codEmpleado, emp_codEmpleado, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes]
         )
 
-        //await dbConnection.execute('COMMIT');
+        await dbConnection.execute('COMMIT');
 
         return res.status(200).json(requerimiento.rows);
     } catch (error) {
