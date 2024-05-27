@@ -1,9 +1,5 @@
 import { Router } from "express";
-import {
-  getProcesosRequerimientos,
-  getUltimaFase,
-  createProcesoRequerimiento,
-} from "../controllers/procesoRequerimiento.controllers.js";
+import { getProcesosRequerimientos, getUltimaFase, createProcesoRequerimiento } from "../controllers/procesoRequerimiento.controllers.js";
 
 const router = Router();
 
