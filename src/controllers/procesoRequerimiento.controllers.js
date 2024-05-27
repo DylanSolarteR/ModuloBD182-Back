@@ -36,7 +36,7 @@ export const createProcesoRequerimiento = async (req, res) => {
         const dbConnection = await oracleDB.getConnection("myPool");
 
         //  Analista General  Analista Cliente
-        const {consecReque, idFase, codEmpleado} = req.body;
+        const {consecReque, idFase, idPerfil, codEmpleado} = req.body;
 
         await dbConnection.execute(
             `
@@ -49,12 +49,12 @@ export const createProcesoRequerimiento = async (req, res) => {
                 ) VALUES (
                     :1,
                     :2,
-                    '0012',
                     :3,
+                    :4,
                     SYSDATE
                 )
             `,
-            [consecReque, idFase, codEmpleado],
+            [consecReque, idFase, idPerfil, codEmpleado],
             { autoCommit: true }
         )
 
