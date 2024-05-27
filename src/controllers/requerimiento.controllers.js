@@ -2,13 +2,13 @@ import oracleDB from "oracledb";
 
 // Obtiene todos los Requerimientos
 export const getRequerimientos = async (req, res) => {
-    try {
-        const dbConnection = await oracleDB.getConnection("myPool");
+  try {
+    const dbConnection = await oracleDB.getConnection("myPool");
 
-        const { emp_codEmpleado } = req.params;
+    const { emp_codEmpleado } = req.params;
 
-        const requerimientos = await dbConnection.execute(
-            `
+    const requerimientos = await dbConnection.execute(
+      `
                 SELECT 
                     *
                 FROM 
@@ -16,28 +16,30 @@ export const getRequerimientos = async (req, res) => {
                 WHERE 
                     EMP_CODEMPLEADO = '${emp_codEmpleado}'
             `
-        );
+    );
 
-        if(requerimientos.rows.length === 0) {
-            return res.status(200).json({ message: 'El empleado no tiene Requerimientos' })
-        }
-
-        return res.status(200).json(requerimientos.rows);
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: 'Error interno del servidor' })
+    if (requerimientos.rows.length === 0) {
+      return res
+        .status(200)
+        .json({ message: "El empleado no tiene Requerimientos" });
     }
-}
+
+    return res.status(200).json(requerimientos.rows);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
 
 // Obtiene un Requerimiento según el CONSECREQUE
 export const getRequerimiento = async (req, res) => {
-    try {
-        const dbConnection = await oracleDB.getConnection("myPool");
+  try {
+    const dbConnection = await oracleDB.getConnection("myPool");
 
-        const { consecReque } = req.params;
+    const { consecReque } = req.params;
 
-        const requerimiento = await dbConnection.execute(
-            `
+    const requerimiento = await dbConnection.execute(
+      `
                 SELECT 
                     R.CONSECREQUE, R.CODEMPLEADO, R.EMP_CODEMPLEADO, R.SALARIOMAX, R.SALARIOMIN, R.DESFUNCION, R.DESCARRERAS, R.NVVACANTES, E.NOMEMPLEADO, E.APELLEMPLEADO
                 FROM 
@@ -47,29 +49,39 @@ export const getRequerimiento = async (req, res) => {
                 WHERE 
                     R.CONSECREQUE = '${consecReque}'
             `
-        );
+    );
 
-        if(requerimiento.rows.length === 0) {
-            return res.status(200).json({ message: 'No hay Requerimientos con ese ConsecReque' })
-        }
-
-        return res.status(200).json(requerimiento.rows);
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: 'Error interno del servidor' })
+    if (requerimiento.rows.length === 0) {
+      return res
+        .status(200)
+        .json({ message: "No hay Requerimientos con ese ConsecReque" });
     }
-}
+
+    return res.status(200).json(requerimiento.rows);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
 
 // Al momento de crear un Requerimiento se crea también un ProcesoRequerimiento
 export const createRequerimiento = async (req, res) => {
-    try {
-        const dbConnection = await oracleDB.getConnection("myPool");
+  try {
+    const dbConnection = await oracleDB.getConnection("myPool");
 
-        //  Analista General  Analista Cliente
-        const {codEmpleado, emp_codEmpleado, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes} = req.body;
+    //  Analista General  Analista Cliente
+    const {
+      codEmpleado,
+      emp_codEmpleado,
+      salarioMax,
+      salarioMin,
+      desFuncion,
+      desCarreras,
+      nVacantes,
+    } = req.body;
 
-        await dbConnection.execute(
-            `
+    await dbConnection.execute(
+      `
                 INSERT INTO REQUERIMIENTO(
                     CODEMPLEADO,
                     EMP_CODEMPLEADO,
@@ -90,12 +102,20 @@ export const createRequerimiento = async (req, res) => {
                     :7
                 )
             `,
-            [codEmpleado, emp_codEmpleado, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes],
-            { autoCommit: true }
-        )
+      [
+        codEmpleado,
+        emp_codEmpleado,
+        salarioMax,
+        salarioMin,
+        desFuncion,
+        desCarreras,
+        nVacantes,
+      ],
+      { autoCommit: true }
+    );
 
-        const requerimiento = await dbConnection.execute(
-            `
+    const requerimiento = await dbConnection.execute(
+      `
                 SELECT *
                 FROM REQUERIMIENTO
                 WHERE CONSECREQUE = (
@@ -103,11 +123,11 @@ export const createRequerimiento = async (req, res) => {
                     FROM REQUERIMIENTO
                 )
             `
-        );
+    );
 
-        return res.status(200).json(requerimiento.rows);
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: 'Error interno del servidor' })
-    }
-}
+    return res.status(200).json(requerimiento.rows);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
