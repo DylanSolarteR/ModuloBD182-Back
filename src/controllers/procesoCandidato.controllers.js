@@ -30,44 +30,43 @@ export const getProcCandidatos = async (req, res) => {
   }
 };
 
-
 export const createProcesoCandidato = async (req, res) => {
   try {
-      const dbConnection = await oracleDB.getConnection("myPool");
+    const dbConnection = await oracleDB.getConnection("myPool");
 
-      const {
-          usuario,
-          consecReque,
-          idFase,
-          idPerfil,
-          consProceso
-      } = req.body;
+    const { usuario, consecReque, idFase, idPerfil, consProceso } = req.body;
 
-      await dbConnection.execute(
-          `
+    await dbConnection.execute(
+      `
               INSERT INTO PROCESOCANDIDATO (
                   USUARIO,
                   CONSECREQUE,
                   IDFASE,
                   IDPERFIL,
                   CONSPROCESO,
-                  FECHAPRESENTACION
+                  FECHAPRESENTACION,
+                  ANALISIS,
+                  PRESENTACION
               ) VALUES (
                   :1,
                   :2,
                   :3,
                   :4,
                   :5,
-                  SYSDATE
+                  SYSDATE,
+                  '',
+                  ''
               )
           `,
-          [usuario, consecReque, idFase, idPerfil, consProceso],
-          { autoCommit: true }
-      );
+      [usuario, consecReque, idFase, idPerfil, consProceso],
+      { autoCommit: true }
+    );
 
-      return res.status(201).json({ message: 'ProcesoCandidato creado exitosamente' });
+    return res
+      .status(201)
+      .json({ message: "ProcesoCandidato creado exitosamente" });
   } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: 'Error interno del servidor' });
+    console.log(error);
+    return res.status(500).json({ message: "Error interno del servidor" });
   }
-}
+};
