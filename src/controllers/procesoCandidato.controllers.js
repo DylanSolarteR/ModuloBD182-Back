@@ -5,17 +5,16 @@ export const getProcCandidatos = async (req, res) => {
   try {
     const dbConnection = await oracleDB.getConnection("myPool");
 
-    const { consecReque, consecProceso, idFase } = req.params;
+    const { consecReque, idFase } = req.params;
 
     const procCandidatos = await dbConnection.execute(
       `
                 SELECT *
                 FROM PROCESOCANDIDATO
                 WHERE CONSECREQUE = :consecReque
-                AND CONSPROCESO = :consecProceso
                 AND IDFASE = LPAD(:idFase,4,0)
             `,
-      [consecReque, consecProceso, idFase]
+      [consecReque, idFase]
     );
 
     if (procCandidatos.rows.length === 0) {

@@ -4,9 +4,6 @@ import { getProcCandidatos } from "../controllers/procesoCandidato.controllers.j
 const router = Router();
 
 //Obtener todos los PROCCANDIDATOS a partir de CONSECREQUE, CONSPROCESO Y IDFASE
-router.get(
-  "/procCandidatos/:consecReque/:consecProceso/:idFase",
-  getProcCandidatos
-);
+router.get("/procCandidatos/:consecReque/:idFase", getProcCandidatos);
 
 export default router;
