@@ -15,7 +15,10 @@ router.get("/procesosRequerimientos/:codEmpleado", getProcesosRequerimientos);
 router.get("/procesoRequerimiento/:consecReque", getUltimaFase);
 
 //GET DE UN ProcesoRequerimiento recibiendo  su consecReque Y idFase
-router.get("/procesoRequerimiento/:consecReque/:idFase", getProcesoRequerimiento);
+router.get(
+  "/procesoRequerimiento/:consecReque/:idFase",
+  getProcesoRequerimiento
+);
 
 //Crear un registro en la tabla PROCESOREQUERIMIENTO
 router.post("/procesoRequerimiento", createProcesoRequerimiento);

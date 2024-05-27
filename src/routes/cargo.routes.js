@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { getInfoEmpleado, getAnalistasGenerales } from "../controllers/cargo.controllers.js";
+import {
+  getInfoEmpleado,
+  getAnalistasGenerales,
+} from "../controllers/cargo.controllers.js";
 
 const router = Router();
 

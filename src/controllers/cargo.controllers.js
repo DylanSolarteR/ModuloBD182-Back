@@ -1,13 +1,13 @@
 import oracleDB from "oracledb";
 
 export const getInfoEmpleado = async (req, res) => {
-    try {
-        const dbConnection = await oracleDB.getConnection("myPool");
+  try {
+    const dbConnection = await oracleDB.getConnection("myPool");
 
-        const { correo } = req.params;
+    const { correo } = req.params;
 
-        const infoEmpleado = await dbConnection.execute(
-            `
+    const infoEmpleado = await dbConnection.execute(
+      `
                 SELECT 
                     E.CODEMPLEADO,
                     E.NOMEMPLEADO,
@@ -31,25 +31,27 @@ export const getInfoEmpleado = async (req, res) => {
                 WHERE 
                     E.CORREO = '${correo}'
             `
-        );
+    );
 
-        if(infoEmpleado.rows.length === 0) {
-            return res.status(404).json({ message: 'Correo del Empleado no encontrado' })
-        }
-
-        return res.status(200).json(infoEmpleado.rows);
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: 'Error interno del servidor' })
+    if (infoEmpleado.rows.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Correo del Empleado no encontrado" });
     }
-}
+
+    return res.status(200).json(infoEmpleado.rows);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
 
 export const getAnalistasGenerales = async (req, res) => {
-    try {
-        const dbConnection = await oracleDB.getConnection("myPool");
+  try {
+    const dbConnection = await oracleDB.getConnection("myPool");
 
-        const analistasGenerales = await dbConnection.execute(
-            `
+    const analistasGenerales = await dbConnection.execute(
+      `
                 SELECT 
                     E.CODEMPLEADO,
                     E.NOMEMPLEADO,
@@ -68,15 +70,17 @@ export const getAnalistasGenerales = async (req, res) => {
                 WHERE 
                     T.DESCTIPOCARGO = 'Analista General'
             `
-        );
+    );
 
-        if(analistasGenerales.rows.length === 0) {
-            return res.status(404).json({ message: 'Analistas Generales no encontrados' })
-        }
-
-        return res.status(200).json(analistasGenerales.rows);
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: 'Error interno del servidor' })
+    if (analistasGenerales.rows.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Analistas Generales no encontrados" });
     }
-}
+
+    return res.status(200).json(analistasGenerales.rows);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
+};

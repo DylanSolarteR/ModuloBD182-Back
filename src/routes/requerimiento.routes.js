@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { getRequerimientos, getRequerimiento, createRequerimiento } from "../controllers/requerimiento.controllers.js";
+import {
+  getRequerimientos,
+  getRequerimiento,
+  createRequerimiento,
+} from "../controllers/requerimiento.controllers.js";
 
 const router = Router();
 

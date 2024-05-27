@@ -87,7 +87,7 @@ export const createProcesoRequerimiento = async (req, res) => {
     return res.status(200).json(procesoRequerimiento.rows);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Error interno del servidor"});
+    return res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 
@@ -145,16 +145,12 @@ export const getProcesoRequerimiento = async (req, res) => {
     );
 
     if (procesoRequerimiento.rows.length === 0) {
-      
-      return res
-        .status(200)
-        .json({
-          message: "No se encontró el ProcesoRequerimiento con esos parámetros",
-        });
+      return res.status(200).json({
+        message: "No se encontró el ProcesoRequerimiento con esos parámetros",
+      });
     }
 
     return res.status(200).json(procesoRequerimiento.rows[0]);
-
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Error interno del servidor" });

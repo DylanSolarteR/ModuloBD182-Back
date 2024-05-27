@@ -1,13 +1,13 @@
 import oracleDB from "oracledb";
 
 export const getPerfiles = async (req, res) => {
-    try {
-        const dbConnection = await oracleDB.getConnection("myPool");
+  try {
+    const dbConnection = await oracleDB.getConnection("myPool");
 
-        const { idDisciplina } = req.params;
+    const { idDisciplina } = req.params;
 
-        const perfiles = await dbConnection.execute(
-            `
+    const perfiles = await dbConnection.execute(
+      `
                 SELECT 
                     *
                 FROM 
@@ -15,15 +15,17 @@ export const getPerfiles = async (req, res) => {
                 WHERE 
                     IDDISCIPLINA = '${idDisciplina}'
             `
-        );
+    );
 
-        if(perfiles.rows.length === 0) {
-            return res.status(200).json({ message: 'La disciplina no tiene Perfiles' })
-        }
-
-        return res.status(200).json(perfiles.rows);
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: 'Error interno del servidor' })
+    if (perfiles.rows.length === 0) {
+      return res
+        .status(200)
+        .json({ message: "La disciplina no tiene Perfiles" });
     }
-}
+
+    return res.status(200).json(perfiles.rows);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
