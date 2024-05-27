@@ -34,13 +34,14 @@ export const getPerfilDisciplina = async (req, res) => {
   try {
     const dbConnection = await oracleDB.getConnection("myPool");
 
-    const { consecReque, idPerfil, idFase } = req.body;
+    const { consecReque, idPerfil, idFase } = req.params;
 
     const perfilDisciplina = await dbConnection.execute(
       `
         SELECT 
             P.DESPERFIL,
-            D.DESCDISCIPLINA
+            D.DESCDISCIPLINA,
+            D.IDDISCIPLINA
         FROM 
             PROCESOREQUERIMIENTO PR
         JOIN 
