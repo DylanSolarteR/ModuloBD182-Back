@@ -11,9 +11,11 @@ export const getHojaVida = async (req, res) => {
                 SELECT 
                     *
                 FROM 
-                    HV
-                WHERE 
-                    USUARIO = '${usuario}'
+                    HV H
+                JOIN CANDIDATO C ON H.USUARIO = C.USUARIO
+                JOIN INSTITUCION I ON H.CODINSTITUCION = I.CODINSTITUCION
+                WHERE
+                    H.USUARIO = '${usuario}'
             `
     );
 
@@ -25,7 +27,7 @@ export const getHojaVida = async (req, res) => {
 
     return res.status(200).json(hojaVida.rows);
   } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Error interno del servidor" });
+    console.log(error);
+    return res.status(500).json({ message: "Error interno del servidor" });
   }
 };
