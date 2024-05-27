@@ -28,10 +28,12 @@ export const getRequerimientos = async (req, res) => {
     }
 }
 
+// Al momento de crear un Requerimiento se crea también un ProcesoRequerimiento
 export const createRequerimiento = async (req, res) => {
     try {
         const dbConnection = await oracleDB.getConnection("myPool");
 
+        //               Analista General  Analista Cliente
         const {consecReque, codEmpleado, emp_codEmpleado, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes} = req.body;
 
         const requerimiento = await dbConnection.execute(
@@ -39,7 +41,7 @@ export const createRequerimiento = async (req, res) => {
                 INSERT INTO REQUERIMIENTO(
                     CONSECREQUE,
                     CODEMPLEADO,
-                    EMP_CODEMPLEADO, 
+                    EMP_CODEMPLEADO,
                     FECHAREQUE, 
                     SALARIOMAX, 
                     SALARIOMIN, 
@@ -59,6 +61,29 @@ export const createRequerimiento = async (req, res) => {
                 )
             `,
             [consecReque, codEmpleado, emp_codEmpleado, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes]
+        )
+
+        await dbConnection.execute('COMMIT');
+
+        await dbConnection.execute(
+            `
+                INSERT INTO PROCESOREQUERIMIENTO (
+                    CONSECREQUE, 
+                    IDFASE, 
+                    IDPERFIL, 
+                    CONSPROCESO, 
+                    CODEMPLEADO,
+                    FECHAINICIO
+                ) VALUES (
+                    :1,
+                    '0001',
+                    '0012',
+                    :2,
+                    :3,
+                    SYSDATE
+                )
+            `,
+            [consecReque, consecReque, codEmpleado]
         )
 
         await dbConnection.execute('COMMIT');

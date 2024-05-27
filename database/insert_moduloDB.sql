@@ -111,6 +111,7 @@ INSERT INTO Perfil (idPerfil, idDisciplina, desPerfil) VALUES ('0008', '0001', '
 INSERT INTO Perfil (idPerfil, idDisciplina, desPerfil) VALUES ('0009', '0001', 'Técnico con Experiencia');
 INSERT INTO Perfil (idPerfil, idDisciplina, desPerfil) VALUES ('0010', '0001', 'Técnico');
 INSERT INTO Perfil (idPerfil, idDisciplina, desPerfil) VALUES ('0011', '0001', 'Bachiller');
+INSERT INTO Perfil (idPerfil, idDisciplina, desPerfil) VALUES ('0012', '0001', 'Plantilla');
 
 INSERT INTO ItemPerfil (idItem, idPerfil, idTipoItemPerfil, descItem) VALUES (0001, '0001', '0003', 'Estudios Pregrado');
 INSERT INTO ItemPerfil (idItem, idPerfil, idTipoItemPerfil, descItem) VALUES (0002, '0001', '0004', 'Estudios Postgrados');
@@ -169,6 +170,7 @@ INSERT INTO PerfilFase (idFase, idPerfil) VALUES ('0005', '0010');
 INSERT INTO PerfilFase (idFase, idPerfil) VALUES ('0006', '0010');
 INSERT INTO PerfilFase (idFase, idPerfil) VALUES ('0007', '0010');
 INSERT INTO PerfilFase (idFase, idPerfil) VALUES ('0008', '0010');
+INSERT INTO PerfilFase (idFase, idPerfil) VALUES ('0001', '0012');
 
 INSERT INTO FaseCargo (conseFaseCargo, idTipoCargo, idFase) VALUES (0001, '001', '0001');
 INSERT INTO FaseCargo (conseFaseCargo, idTipoCargo, idFase) VALUES (0002, '002', '0002');
