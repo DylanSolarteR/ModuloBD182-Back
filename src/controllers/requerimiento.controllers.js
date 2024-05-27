@@ -33,13 +33,12 @@ export const createRequerimiento = async (req, res) => {
     try {
         const dbConnection = await oracleDB.getConnection("myPool");
 
-        //               Analista General  Analista Cliente
-        const {consecReque, codEmpleado, emp_codEmpleado, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes} = req.body;
+        //  Analista General  Analista Cliente
+        const {codEmpleado, emp_codEmpleado, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes} = req.body;
 
         const requerimiento = await dbConnection.execute(
             `
                 INSERT INTO REQUERIMIENTO(
-                    CONSECREQUE,
                     CODEMPLEADO,
                     EMP_CODEMPLEADO,
                     FECHAREQUE, 
@@ -51,21 +50,21 @@ export const createRequerimiento = async (req, res) => {
                 ) VALUES (
                     :1,
                     :2,
-                    :3,
                     SYSDATE,
+                    :3,
                     :4,
                     :5,
                     :6,
-                    :7,
-                    :8
+                    :7
                 )
+                RETURNING *
             `,
-            [consecReque, codEmpleado, emp_codEmpleado, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes]
+            [codEmpleado, emp_codEmpleado, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes]
         )
 
         await dbConnection.execute('COMMIT');
 
-        await dbConnection.execute(
+        /*await dbConnection.execute(
             `
                 INSERT INTO PROCESOREQUERIMIENTO (
                     CONSECREQUE, 
@@ -86,7 +85,7 @@ export const createRequerimiento = async (req, res) => {
             [consecReque, consecReque, codEmpleado]
         )
 
-        await dbConnection.execute('COMMIT');
+        await dbConnection.execute('COMMIT');*/
 
         return res.status(200).json(requerimiento.rows);
     } catch (error) {
