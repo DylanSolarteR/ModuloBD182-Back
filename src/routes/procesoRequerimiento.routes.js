@@ -1,9 +1,15 @@
 import { Router } from "express";
-import { getProcesosRequerimientos } from "../controllers/procesoRequerimiento.controllers.js";
+import { getProcesosRequerimientos, createProcesoRequerimiento } from "../controllers/procesoRequerimiento.controllers.js";
 
 const router = Router();
 
-//Obtener todas las Disciplinas
+//Obtener todos los Requerimientos según el CODEMPLEADO y la última Fase
 router.get("/procesosRequerimientos/:codEmpleado", getProcesosRequerimientos);
+
+
+
+
+//Crear un registro en la tabla PROCESOREQUERIMIENTO
+router.post("/procesoRequerimiento", createProcesoRequerimiento);
 
 export default router;

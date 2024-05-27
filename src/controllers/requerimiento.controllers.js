@@ -103,31 +103,6 @@ export const createRequerimiento = async (req, res) => {
             `
         );
 
-        //await dbConnection.execute('COMMIT');
-
-        /*await dbConnection.execute(
-            `
-                INSERT INTO PROCESOREQUERIMIENTO (
-                    CONSECREQUE, 
-                    IDFASE, 
-                    IDPERFIL, 
-                    CONSPROCESO, 
-                    CODEMPLEADO,
-                    FECHAINICIO
-                ) VALUES (
-                    :1,
-                    '0001',
-                    '0012',
-                    :2,
-                    :3,
-                    SYSDATE
-                )
-            `,
-            [consecReque, consecReque, codEmpleado]
-        )
-
-        await dbConnection.execute('COMMIT');*/
-
         return res.status(200).json(requerimiento.rows);
     } catch (error) {
         console.log(error);
