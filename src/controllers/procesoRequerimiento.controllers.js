@@ -31,6 +31,7 @@ export const getProcesosRequerimientos = async (req, res) => {
     }
 }
 
+// GET - Obtener un ProcesoRequerimiento según el idreq y idproc
 export const createProcesoRequerimiento = async (req, res) => {
     try {
         const dbConnection = await oracleDB.getConnection("myPool");
@@ -90,13 +91,13 @@ export const getUltimaFase = async (req, res) => {
                 WHERE CONSECREQUE = :consecReque
                 AND CONSPROCESO = :consecProceso
                 AND IDFASE = (
-                    SELECT MAX(IDFASE)
+                    SELECT MAX(TO_NUMBER(IDFASE))
                     FROM PROCESOREQUERIMIENTO
                     WHERE CONSECREQUE = :consecReque
                     AND CONSPROCESO = :consecProceso
                 )
             `,
-            [consecReque, consecProceso, consecReque, consecProceso]
+            {consecReque, consecProceso}
         );
 
         if (ultimaFase.rows.length === 0) {
