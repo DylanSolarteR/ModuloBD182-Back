@@ -52,15 +52,13 @@ export const getPerfilDisciplina = async (req, res) => {
         WHERE 
             PR.CONSECREQUE = :consecReque AND PR.IDPERFIL = :idPerfil AND PR.IDFASE = :idFase
             `,
-        { consecReque, idPerfil, idFase }
+      { consecReque, idPerfil, idFase }
     );
 
     if (perfilDisciplina.rows.length === 0) {
-      return res
-        .status(200)
-        .json({
-          message: "Descripciones de Disciplina y Perfil no encontrados",
-        });
+      return res.status(200).json({
+        message: "Descripciones de Disciplina y Perfil no encontrados",
+      });
     }
 
     return res.status(200).json(perfilDisciplina.rows);
