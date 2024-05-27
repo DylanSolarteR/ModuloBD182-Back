@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { getPerfiles, getPerfilDisciplina } from "../controllers/perfil.controllers.js";
+import {
+  getPerfiles,
+  getPerfilDisciplina,
+} from "../controllers/perfil.controllers.js";
 
 const router = Router();
 

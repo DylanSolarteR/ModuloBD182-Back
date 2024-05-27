@@ -2,13 +2,13 @@ import oracleDB from "oracledb";
 
 // GET - Obtener todos los Procesos Requerimientos
 export const getProcesosRequerimientos = async (req, res) => {
-    try {
-        const dbConnection = await oracleDB.getConnection("myPool");
+  try {
+    const dbConnection = await oracleDB.getConnection("myPool");
 
-        const { codEmpleado } = req.params;
+    const { codEmpleado } = req.params;
 
-        const procesosRequerimientos = await dbConnection.execute(
-            `
+    const procesosRequerimientos = await dbConnection.execute(
+      `
                 SELECT * FROM PROCESOREQUERIMIENTO P
                 WHERE P.CODEMPLEADO = :codEmpleado
                 AND IDFASE = (
@@ -18,51 +18,63 @@ export const getProcesosRequerimientos = async (req, res) => {
                     = PR.CONSECREQUE)
                 ORDER BY CONSECREQUE
             `,
-            { codEmpleado }
-        );
+      { codEmpleado }
+    );
 
-        if (procesosRequerimientos.rows.length === 0) {
-        return res
-            .status(404)
-            .json({ message: "No hay Procesos Requerimientos" });
-        }
-
-        return res.status(200).json(procesosRequerimientos.rows);
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Error interno del servidor" });
+    if (procesosRequerimientos.rows.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No hay Procesos Requerimientos" });
     }
+
+    return res.status(200).json(procesosRequerimientos.rows);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
 };
 
+// GET - Obtener un ProcesoRequerimiento según el idreq y idproc
 export const createProcesoRequerimiento = async (req, res) => {
-    try {
-        const dbConnection = await oracleDB.getConnection("myPool");
+  try {
+    const dbConnection = await oracleDB.getConnection("myPool");
 
-        //  Analista General  Analista Cliente
-        const { consecReque, idFase, idPerfil, codEmpleado } = req.body;
+    //  Analista General  Analista Cliente
+    const {
+      consecReque,
+      idFase,
+      idPerfil,
+      codEmpleado,
+      convocatoria,
+      invitacion,
+    } = req.body;
 
-        await dbConnection.execute(
-            `
+    await dbConnection.execute(
+      `
                 INSERT INTO PROCESOREQUERIMIENTO (
                     CONSECREQUE, 
                     IDFASE, 
                     IDPERFIL, 
                     CODEMPLEADO,
-                    FECHAINICIO
+                    FECHAINICIO,
+                    CONVOCATORIA,
+                    INVITACION
                 ) VALUES (
                     :1,
                     :2,
                     :3,
                     :4,
-                    SYSDATE
+                    SYSDATE,
+                    :5,
+                    :6
                 )
             `,
-            [consecReque, idFase, idPerfil, codEmpleado],
-            { autoCommit: true }
-        );
+      [consecReque, idFase, idPerfil, codEmpleado, convocatoria, invitacion],
+      { autoCommit: true }
+    );
 
-        const procesoRequerimiento = await dbConnection.execute(
-            `
+    const procesoRequerimiento = await dbConnection.execute(
+      `
                 SELECT *
                 FROM PROCESOREQUERIMIENTO
                 WHERE CONSPROCESO = (
@@ -70,24 +82,24 @@ export const createProcesoRequerimiento = async (req, res) => {
                 FROM PROCESOREQUERIMIENTO
                 )
             `
-        );
+    );
 
-        return res.status(200).json(procesoRequerimiento.rows);
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Error interno del servidor" });
-    }
+    return res.status(200).json(procesoRequerimiento.rows);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
 };
 
 // GET - Obtener un ProcesoRequerimiento según el idreq y idproc
 export const getUltimaFase = async (req, res) => {
-    try {
-        const dbConnection = await oracleDB.getConnection("myPool");
+  try {
+    const dbConnection = await oracleDB.getConnection("myPool");
 
-        const { consecReque } = req.params;
+    const { consecReque } = req.params;
 
-        const ultimaFase = await dbConnection.execute(
-            `
+    const ultimaFase = await dbConnection.execute(
+      `
                 SELECT *
                 FROM PROCESOREQUERIMIENTO
                 WHERE CONSECREQUE = :consecReque
@@ -97,16 +109,50 @@ export const getUltimaFase = async (req, res) => {
                     WHERE CONSECREQUE = :consecReque
                 )
             `,
-            { consecReque }
-        );
+      { consecReque }
+    );
 
-        if (ultimaFase.rows.length === 0) {
-            return res.status(200).json({ message: "No se encontraron fases para ese CONSECREQUE y CONSPROCESO" });
-        }
-
-        return res.status(200).json(ultimaFase.rows[0]);
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Error interno del servidor" });
+    if (ultimaFase.rows.length === 0) {
+      return res.status(200).json({
+        message: "No se encontraron fases para ese CONSECREQUE y CONSPROCESO",
+      });
     }
+
+    return res.status(200).json(ultimaFase.rows[0]);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
+//GET DE UN ProcesoRequerimiento recibiendo su consecReque Y idFase
+
+export const getProcesoRequerimiento = async (req, res) => {
+  try {
+    const dbConnection = await oracleDB.getConnection("myPool");
+
+    const { consecReque, idFase } = req.params;
+
+    const procesoRequerimiento = await dbConnection.execute(
+      `	
+                SELECT *
+                FROM PROCESOREQUERIMIENTO 
+                WHERE CONSECREQUE = :consecReque
+                AND IDFASE = LPAD(:idFase,4,0)
+            
+            `,
+      [consecReque, idFase]
+    );
+
+    if (procesoRequerimiento.rows.length === 0) {
+      return res.status(200).json({
+        message: "No se encontró el ProcesoRequerimiento con esos parámetros",
+      });
+    }
+
+    return res.status(200).json(procesoRequerimiento.rows[0]);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
 };
