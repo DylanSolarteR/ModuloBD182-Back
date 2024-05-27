@@ -1,11 +1,12 @@
 import { Router } from "express";
-import {
-    getProcCandidatos,
-} from "../controllers/procesoCandidato.controllers.js";
+import { getProcCandidatos } from "../controllers/procesoCandidato.controllers.js";
 
 const router = Router();
 
 //Obtener todos los PROCCANDIDATOS a partir de CONSECREQUE, CONSPROCESO Y IDFASE
-router.get("/procCandidatos/:consecReque/:consecProceso/:idFase", getProcCandidatos);
+router.get(
+  "/procCandidatos/:consecReque/:consecProceso/:idFase",
+  getProcCandidatos
+);
 
 export default router;
