@@ -84,22 +84,20 @@ export const getUltimaFase = async (req, res) => {
   try {
     const dbConnection = await oracleDB.getConnection("myPool");
 
-    const { consecReque, consecProceso } = req.params;
+    const { consecReque } = req.params;
 
     const ultimaFase = await dbConnection.execute(
       `
-                SELECT *
+            SELECT *
+            FROM PROCESOREQUERIMIENTO
+            WHERE CONSECREQUE = :consecReque
+            AND IDFASE = (
+                SELECT MAX(TO_NUMBER(IDFASE))
                 FROM PROCESOREQUERIMIENTO
                 WHERE CONSECREQUE = :consecReque
-                AND CONSPROCESO = :consecProceso
-                AND IDFASE = (
-                    SELECT MAX(IDFASE)
-                    FROM PROCESOREQUERIMIENTO
-                    WHERE CONSECREQUE = :consecReque
-                    AND CONSPROCESO = :consecProceso
-                )
+            )
             `,
-      [consecReque, consecProceso, consecReque, consecProceso]
+      { consecReque }
     );
 
     if (ultimaFase.rows.length === 0) {

@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { getProcesosRequerimientos, getUltimaFase, createProcesoRequerimiento} from "../controllers/procesoRequerimiento.controllers.js";
+import {
+  getProcesosRequerimientos,
+  getUltimaFase,
+  createProcesoRequerimiento,
+} from "../controllers/procesoRequerimiento.controllers.js";
 
 const router = Router();
 
@@ -7,7 +11,7 @@ const router = Router();
 router.get("/procesosRequerimientos/:codEmpleado", getProcesosRequerimientos);
 
 //Obtener un ProcesoRequerimiento según el idreq y idproc
-router.get("/ultimaFase/:consecReque/:consecProceso", getUltimaFase);
+router.get("/procesoRequerimiento/:consecReque", getUltimaFase);
 
 //Crear un registro en la tabla PROCESOREQUERIMIENTO
 router.post("/procesoRequerimiento", createProcesoRequerimiento);
