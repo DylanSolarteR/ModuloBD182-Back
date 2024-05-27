@@ -1,5 +1,6 @@
 import oracleDB from "oracledb";
 
+// Obtiene todos los Requerimientos
 export const getRequerimientos = async (req, res) => {
     try {
         const dbConnection = await oracleDB.getConnection("myPool");
@@ -28,6 +29,7 @@ export const getRequerimientos = async (req, res) => {
     }
 }
 
+// Obtiene un Requerimiento según el CONSECREQUE
 export const getRequerimiento = async (req, res) => {
     try {
         const dbConnection = await oracleDB.getConnection("myPool");
@@ -39,9 +41,9 @@ export const getRequerimiento = async (req, res) => {
                 SELECT 
                     *
                 FROM 
-                    REQUERIMIENTO
+                    REQUERIMIENTO R
                 WHERE 
-                    EMP_CODEMPLEADO = '${consecReque}'
+                    R.consecReque = '${consecReque}'
             `
         );
 

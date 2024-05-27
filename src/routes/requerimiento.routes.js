@@ -7,7 +7,7 @@ const router = Router();
 router.get("/requerimientos/:emp_codEmpleado", getRequerimientos);
 
 //Obtener un Requerimiento según el CONSECREQUE
-router.get("/requerimientos/:consecReque", getRequerimiento);
+router.get("/requerimiento/:consecReque", getRequerimiento);
 
 //Crear registro en la tabla REQUERIMIENTO
 router.post("/requerimiento", createRequerimiento);
