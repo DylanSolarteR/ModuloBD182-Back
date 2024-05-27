@@ -9,7 +9,10 @@ const router = Router();
 //Obtener todas las Disciplinas
 router.get("/perfiles/:idDisciplina", getPerfiles);
 
-//Obtener DESCPERFIL Y DESDISCIPLINA dado el CONSPROCESO y la IDFASE
-router.get("/descPerfilDisciplina", getPerfilDisciplina);
+//Obtener DESCPERFIL Y DESDISCIPLINA dado el CONSECREQUE, el IDPERFIL y la IDFASE
+router.get(
+  "/descPerfilDisciplina/:consecReque/:idPerfil/:idFase",
+  getPerfilDisciplina
+);
 
 export default router;
