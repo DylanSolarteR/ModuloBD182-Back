@@ -39,11 +39,13 @@ export const getRequerimiento = async (req, res) => {
         const requerimiento = await dbConnection.execute(
             `
                 SELECT 
-                    *
+                    R.CONSECREQUE, R.CODEMPLEADO, R.EMP_CODEMPLEADO, R.SALARIOMAX, R.SALARIOMIN, R.DESFUNCION, R.DESCARRERAS, R.NVVACANTES, E.NOMEMPLEADO, E.APELLEMPLEADO
                 FROM 
                     REQUERIMIENTO R
+                JOIN 
+                    EMPLEADO E ON R.CODEMPLEADO = E.CODEMPLEADO
                 WHERE 
-                    R.consecReque = '${consecReque}'
+                    R.CONSECREQUE = '${consecReque}'
             `
         );
 
