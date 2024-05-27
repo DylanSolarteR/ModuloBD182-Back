@@ -10,6 +10,7 @@ import requerimientoRoutes from "./routes/requerimiento.routes.js"
 import disciplinaRoutes from "./routes/disciplina.routes.js"
 import perfilRoutes from "./routes/perfil.routes.js"
 import procesoRequerimientoRoutes from "./routes/procesoRequerimiento.routes.js"
+import procesoCandidatoRoutes from "./routes/procesoCandidato.routes.js"
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(requerimientoRoutes);
 app.use(disciplinaRoutes);
 app.use(perfilRoutes);
 app.use(procesoRequerimientoRoutes);
+app.use(procesoCandidatoRoutes);
 
 const start = async () => {
     try {
