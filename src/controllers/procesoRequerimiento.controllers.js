@@ -9,14 +9,14 @@ export const getProcesosRequerimientos = async (req, res) => {
 
     const procesosRequerimientos = await dbConnection.execute(
       `
-            SELECT * FROM PROCESOREQUERIMIENTO P
-            WHERE P.CODEMPLEADO = :codEmpleado
-            AND IDFASE = (
-                SELECT MAX(TO_NUMBER(IDFASE))
-                FROM PROCESOREQUERIMIENTO PR
-                WHERE PR.CODEMPLEADO = :codEmpleado AND P.CONSECREQUE
-                = PR.CONSECREQUE)
-            ORDER BY CONSECREQUE
+                SELECT * FROM PROCESOREQUERIMIENTO P
+                WHERE P.CODEMPLEADO = :codEmpleado
+                AND IDFASE = (
+                    SELECT MAX(TO_NUMBER(IDFASE))
+                    FROM PROCESOREQUERIMIENTO PR
+                    WHERE PR.CODEMPLEADO = :codEmpleado AND P.CONSECREQUE
+                    = PR.CONSECREQUE)
+                ORDER BY CONSECREQUE
             `,
       { codEmpleado }
     );
@@ -78,8 +78,8 @@ export const createProcesoRequerimiento = async (req, res) => {
                 SELECT *
                 FROM PROCESOREQUERIMIENTO
                 WHERE CONSPROCESO = (
-                    SELECT MAX(CONSPROCESO)
-                    FROM PROCESOREQUERIMIENTO
+                SELECT MAX(CONSPROCESO)
+                FROM PROCESOREQUERIMIENTO
                 )
             `
     );
@@ -100,14 +100,14 @@ export const getUltimaFase = async (req, res) => {
 
     const ultimaFase = await dbConnection.execute(
       `
-            SELECT *
-            FROM PROCESOREQUERIMIENTO
-            WHERE CONSECREQUE = :consecReque
-            AND IDFASE = (
-                SELECT MAX(TO_NUMBER(IDFASE))
+                SELECT *
                 FROM PROCESOREQUERIMIENTO
                 WHERE CONSECREQUE = :consecReque
-            )
+                AND IDFASE = (
+                    SELECT MAX(TO_NUMBER(IDFASE))
+                    FROM PROCESOREQUERIMIENTO
+                    WHERE CONSECREQUE = :consecReque
+                )
             `,
       { consecReque }
     );
@@ -125,7 +125,7 @@ export const getUltimaFase = async (req, res) => {
   }
 };
 
-//GET DE UN ProcesoRequerimiento recibiendo  su consecReque Y idFase
+//GET DE UN ProcesoRequerimiento recibiendo su consecReque Y idFase
 
 export const getProcesoRequerimiento = async (req, res) => {
   try {
