@@ -8,13 +8,15 @@ export const getProcesosRequerimientos = async (req, res) => {
 
         const procesosRequerimientos = await dbConnection.execute(
             `
-                SELECT 
-                    *
-                FROM 
-                    PROCESOREQUERIMIENTO
-                //codEmpleado
-                //Última fase
-            `
+                SELECT *
+                FROM PROCESOREQUERIMIENTO
+                WHERE CODEMPLEADO = :codEmpleado
+                AND IDFASE = (
+                    SELECT MAX(IDFASE)
+                    FROM PROCESOREQUERIMIENTO
+                    WHERE CODEMPLEADO = :codEmpleado
+                )
+            `, { codEmpleado }
         );
 
         if(procesosRequerimientos.rows.length === 0) {
