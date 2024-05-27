@@ -1,10 +1,13 @@
 import { Router } from "express";
-import { getRequerimientos, createRequerimiento } from "../controllers/requerimiento.controllers.js";
+import { getRequerimientos, getRequerimiento, createRequerimiento } from "../controllers/requerimiento.controllers.js";
 
 const router = Router();
 
 //Obtener todos los Requerimientos
 router.get("/requerimientos/:emp_codEmpleado", getRequerimientos);
+
+//Obtener un Requerimiento según el CONSECREQUE
+router.get("/requerimientos/:consecReque", getRequerimiento);
 
 //Crear registro en la tabla REQUERIMIENTO
 router.post("/requerimiento", createRequerimiento);

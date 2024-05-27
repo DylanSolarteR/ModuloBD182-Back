@@ -4,6 +4,6 @@ import { getProcesosRequerimientos } from "../controllers/procesoRequerimiento.c
 const router = Router();
 
 //Obtener todas las Disciplinas
-router.get("/procesosRequerimientos", getProcesosRequerimientos);
+router.get("/procesosRequerimientos/:codEmpleado", getProcesosRequerimientos);
 
 export default router;
