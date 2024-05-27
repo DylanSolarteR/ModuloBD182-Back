@@ -36,7 +36,7 @@ export const createRequerimiento = async (req, res) => {
         //  Analista General  Analista Cliente
         const {codEmpleado, emp_codEmpleado, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes} = req.body;
 
-        const requerimiento = await dbConnection.execute(
+        await dbConnection.execute(
             `
                 INSERT INTO REQUERIMIENTO(
                     CODEMPLEADO,
@@ -57,12 +57,23 @@ export const createRequerimiento = async (req, res) => {
                     :6,
                     :7
                 )
-                RETURNING *
             `,
-            [codEmpleado, emp_codEmpleado, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes]
+            [codEmpleado, emp_codEmpleado, salarioMax, salarioMin, desFuncion, desCarreras, nVacantes],
+            { autoCommit: true }
         )
 
-        await dbConnection.execute('COMMIT');
+        const requerimiento = await dbConnection.execute(
+            `
+                SELECT *
+                FROM REQUERIMIENTO
+                WHERE CONSECREQUE = (
+                    SELECT MAX(CONSECREQUE)
+                    FROM REQUERIMIENTO
+                )
+            `
+        );
+
+        //await dbConnection.execute('COMMIT');
 
         /*await dbConnection.execute(
             `
